@@ -1,0 +1,9 @@
+# .air.toml
+root = "."
+tmp_dir = "tmp"
+[build]
+  cmd = "go build -o tmp/app server.go && chmod 755 tmp/app"
+  bin = "tmp/app"
+  full_bin = "tmp/app"
+[log]
+  time = true

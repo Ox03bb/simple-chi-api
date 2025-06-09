@@ -1,17 +1,16 @@
 package routing
 
 import (
-	"net/http"
+	view "learn/views"
 
 	"github.com/go-chi/chi"
 )
 
-func UserRes(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("this is user"))
-}
-
+// the first method of routing
+// the second method using HandleFunc()
 func UserRoutes(users chi.Router) {
 
-	users.Get("/", UserRes)
+	users.Get("/", view.UserView)
+	users.Post("/", view.CreateUser)
 
 }
