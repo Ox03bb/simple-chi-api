@@ -3,6 +3,8 @@ package models
 import (
 	"log"
 
+	"database/sql"
+
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -34,7 +36,7 @@ func createRootUser(db *gorm.DB) error {
 		Username: "root",
 		Password: "root",
 		Email:    "root@root.su",
-		IsAdmin:  true,
+		IsAdmin:  sql.NullBool{Bool: true, Valid: true},
 	}
 	err := db.Create(&root).Error
 	if err != nil {
