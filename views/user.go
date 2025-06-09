@@ -31,7 +31,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	log.Println("Username:", user.Username, user.UserNameValidation())
 	log.Println("Email:", user.Email, user.EmailValidation())
 
-	if !(user.UserNameValidation() && user.EmailValidation() && user.PasswordValidation()) {
+	if !(user.PasswordValidation()) {
 		http.Error(w, "Invalid Data", http.StatusBadRequest)
 		return
 	}
@@ -42,4 +42,18 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusCreated)
+}
+
+func GetAllUser(w http.ResponseWriter, r *http.Request) {
+	var db = models.GetDB()
+	var users []models.User
+
+	err := db.Find(&users).Error
+	if err != nil {
+		http.Error(w, "Error fetching users: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(users)
 }

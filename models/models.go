@@ -13,9 +13,9 @@ type Model struct {
 
 type User struct {
 	Model
-	Username  string       `gorm:"uniqueIndex;not null"`
+	Username  string       `gorm:"uniqueIndex;not null" validate:"required,min=3,max=20,alphanum"`
 	Password  string       `gorm:"not null"`
-	Email     string       `gorm:"uniqueIndex;not null"`
+	Email     string       `gorm:"uniqueIndex;not null;unique" validate:"required,email"`
 	IsAdmin   sql.NullBool `gorm:"default:false"`
 	FirstName sql.NullString
 	LastName  sql.NullString

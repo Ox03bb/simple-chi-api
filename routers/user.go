@@ -10,7 +10,7 @@ import (
 // the second method using HandleFunc()
 func UserRoutes(users chi.Router) {
 
-	users.Get("/", view.UserView)
+	users.Get("/", view.GetAllUser)
 	users.Post("/", view.CreateUser)
 
 }

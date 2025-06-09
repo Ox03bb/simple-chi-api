@@ -24,7 +24,7 @@ func (user *User) EmailValidation() bool {
 }
 
 func (user *User) PasswordValidation() bool {
-	if user.Password == "" {
+	if user.Password == "" || user.Password == user.Username || user.Password == user.Email {
 		return false
 	}
 	// Password must be 8-30 characters, at least one letter and one number
