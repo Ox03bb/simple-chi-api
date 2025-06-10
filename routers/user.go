@@ -11,6 +11,8 @@ import (
 func UserRoutes(users chi.Router) {
 
 	users.Get("/", view.GetAllUser)
+	users.Get("/{id}", view.GetUserByID)
+	users.Patch("/{id}", view.UpdateUser)
 	users.Post("/", view.CreateUser)
 
 }

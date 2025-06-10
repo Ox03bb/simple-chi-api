@@ -1,12 +1,16 @@
 package models
 
 import (
+	"errors"
 	"regexp"
+
+	"gorm.io/gorm"
 )
 
 //! User
 
 func (user *User) UserNameValidation() bool {
+
 	if user.Username == "" {
 		return false
 	}
@@ -31,4 +35,19 @@ func (user *User) PasswordValidation() bool {
 	re := regexp.MustCompile(`^[A-Za-z\d_]{8,30}$`)
 
 	return re.MatchString(user.Password)
+}
+
+func (u *User) BeforeSave(tx *gorm.DB) (err error) {
+
+	if u.Username != "" {
+		if !u.UserNameValidation() {
+			return errors.New("invalid username")
+		}
+	}
+	if u.Email != "" {
+		if !u.EmailValidation() {
+			return errors.New("invalid email")
+		}
+	}
+	return
 }
