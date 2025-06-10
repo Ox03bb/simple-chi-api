@@ -7,16 +7,30 @@ import (
 	"net/http"
 )
 
-func UserView(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodPost {
+// func UserView(w http.ResponseWriter, r *http.Request) {
+// 	if r.Method == http.MethodPost {
 
-		w.Write([]byte("User View: GET request"))
+// 		w.Write([]byte("User View: GET request"))
 
-	} else if r.Method == http.MethodPost {
+// 	} else if r.Method == http.MethodPost {
 
-		w.Write([]byte("User View: POST request"))
+// 		w.Write([]byte("User View: POST request"))
 
+// 	}
+// }
+
+func GetAllUser(w http.ResponseWriter, r *http.Request) {
+	var db = models.GetDB()
+	var users []models.User
+
+	err := db.Find(&users).Error
+	if err != nil {
+		http.Error(w, "Error fetching users: "+err.Error(), http.StatusInternalServerError)
+		return
 	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(users)
 }
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
@@ -42,18 +56,4 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusCreated)
-}
-
-func GetAllUser(w http.ResponseWriter, r *http.Request) {
-	var db = models.GetDB()
-	var users []models.User
-
-	err := db.Find(&users).Error
-	if err != nil {
-		http.Error(w, "Error fetching users: "+err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(users)
 }

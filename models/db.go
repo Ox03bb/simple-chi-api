@@ -3,8 +3,6 @@ package models
 import (
 	"log"
 
-	"database/sql"
-
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -32,11 +30,13 @@ func Migrate(db *gorm.DB) error {
 }
 
 func createRootUser(db *gorm.DB) error {
+	var isAdmin bool = true
+
 	var root User = User{
 		Username: "root",
 		Password: "root",
 		Email:    "root@root.su",
-		IsAdmin:  sql.NullBool{Bool: true, Valid: true},
+		IsAdmin:  &isAdmin,
 	}
 	err := db.Create(&root).Error
 	if err != nil {
